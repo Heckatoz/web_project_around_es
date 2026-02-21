@@ -1,4 +1,4 @@
-let initialCards = [
+const initialCards = [
   {
     name: "Valle de Yosemite",
     link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_yosemite.jpg",
@@ -31,8 +31,8 @@ let initialCards = [
 ]; // Da una lista inicial de cartas para la pagina.(Nombre y enlace)
 
 const editButton = document.querySelector(".profile__edit-button"); // Enlazar el boton para abrir la ventana para editar objetos en la pagina
-let profileName = document.querySelector(".profile__title"); // Enlazar el nombre del perfil de la pagina.
-let profileDescription = document.querySelector(".profile__description"); // Enlaza la descripcion de la persona del perfil de la pafina
+const profileName = document.querySelector(".profile__title"); // Enlazar el nombre del perfil de la pagina.
+const profileDescription = document.querySelector(".profile__description"); // Enlaza la descripcion de la persona del perfil de la pafina
 
 const editPopupModal = document.querySelector("#edit-popup"); // Enlaza la ventana para edicion
 const editCloseButton = editPopupModal.querySelector(".popup__close"); // Enlaza el boton para cerrar la ventana de edicion
@@ -40,15 +40,15 @@ const editName = editPopupModal.querySelector(".popup__input_type_name"); // Enl
 const editDescription = editPopupModal.querySelector(
   ".popup__input_type_description",
 ); // Enlaza la caja de texto de la descripcion de la ventana de edicion.
-let formElement = document.querySelector(".popup__form"); // Enlaza el formulario que llevara los datos del perfil.
+const formElement = document.querySelector(".popup__form"); // Enlaza el formulario que llevara los datos del perfil.
 const cardTemplate = document.querySelector("#card__template"); // Enlaza la plantilla para cada publicacion que se hara.
 const cardContainer = document.querySelector(".cards__list"); // Enlaza el espacio donde se guardan y listan las publicaciones.
 const newCardButton = document.querySelector(".profile__add-button"); // Enlaza el boton para crear una nuva publicacion
 const newCardModal = document.querySelector("#new-card-popup"); // Enlaza la plantilla para crear una nueva publicacion
 const cardCloseButton = newCardModal.querySelector(".popup__close"); // Enlaza el boton para cerrar la ventana de edicion
-let cardForm = document.querySelector("#new-card-form"); // Enlaza el formulario para crar una nueva publicacion
-let cardName = document.querySelector("card__title"); // Enlaza el nombre de la nueva publicacion ya desplegada
-let cardLink = document.querySelector("card__image"); // Enlaza el enlace de la publicacion ya desplegada
+const cardForm = document.querySelector("#new-card-form"); // Enlaza el formulario para crar una nueva publicacion
+const cardName = document.querySelector("card__title"); // Enlaza el nombre de la nueva publicacion ya desplegada
+const cardLink = document.querySelector("card__image"); // Enlaza el enlace de la publicacion ya desplegada
 const editCardName = newCardModal.querySelector(".popup__input_type_card-name"); // Enlaza el espacio en el formulario del titulo o nombre
 const editCardLink = newCardModal.querySelector(".popup__input_type_url"); // Enlaza el espacio en el formulario del enlace.
 const imageModal = document.querySelector("#image-popup"); // Enlaza el despliegue del contenido de la publicacion al seleccionarla
