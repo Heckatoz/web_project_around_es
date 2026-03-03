@@ -55,6 +55,12 @@ const imageModal = document.querySelector("#image-popup"); // Enlaza el desplieg
 const titleImageModal = imageModal.querySelector(".popup__caption"); // Enlaza el titulo de la publicacion desplegada
 const linkImageModal = imageModal.querySelector(".popup__image"); // Enlaza el enlace de la imagen de la publicacion desplegada
 const closeModalBtn = imageModal.querySelector(".popup__close"); // Enlaza el boton para cerrar el despliegue del contenido de la publicacion
+const popupEdit = document.forms.popupEdit;
+const inputsEdit = popupEdit.querySelectorAll(".popup__input");
+const popupPlace = document.forms.popupPlace;
+const inputsPlace = popupPlace.querySelectorAll(".popup__input");
+const popupEditButton = popupEdit.querySelector(".popup__button-submit");
+const popupPlaceButton = popupPlace.querySelector(".popup__button-submit");
 
 function getCardElement(name, link) {
   // Toma la plantilla para publicacions y crea una publicacion con la informacion proporcionada.
@@ -62,6 +68,10 @@ function getCardElement(name, link) {
   const titleElement = cardElement.querySelector(".card__title"); // Enlaza la clase donde esta el titulo en la plantilla con una variable modificable
   const imageElement = cardElement.querySelector(".card__image"); // Enlaza la clase donde esta la imagen en la plantilla con una variable modificable
 
+  titleElement.textContent = name; // Se rellena el contenido con la informacion proporcionada.
+  imageElement.alt = name;
+  imageElement.src = link;
+  /* Esta funcion permite poner valores por defecto en caso de no introducir informacion, pero al usar validacion, no son necesarios.
   if (name != "") {
     // Si no se proporciona nombre en la publicacion, se rellena con contenido ya definido
     titleElement.textContent = name; // Se rellena el contenido con la informacion proporcionada.
@@ -77,6 +87,7 @@ function getCardElement(name, link) {
     imageElement.src = "./images/placeholder.jpg"; //Se asigna una imagen predeterminada en caso de no seleccionar una
     imageElement.alt = "Sin imagen";
   }
+    */
 
   const cardLikeBtn = cardElement.querySelector(".card__like-button"); // Se asigna el boton de "me gusta" a la variable
 
@@ -149,6 +160,9 @@ editButton.addEventListener("click", function () {
 
 editCloseButton.addEventListener("click", function () {
   // accion que actua al hacer click el el boton de cerrar
+  inputsEdit.forEach((input) => {
+    hideInputError(popupEdit, input);
+  });
   closeModal(editPopupModal);
 });
 
@@ -184,6 +198,11 @@ newCardButton.addEventListener("click", function () {
 
 cardCloseButton.addEventListener("click", function () {
   // accion que actua al hacer click el el boton de cerrar el formulario de la nueva publicacion.
+  editCardName.value = "";
+  editCardLink.value = "";
+  inputsPlace.forEach((input) => {
+    hideInputError(popupPlace, input);
+  });
   closeModal(newCardModal);
 });
 
@@ -193,4 +212,95 @@ cardForm.addEventListener("submit", handleCardFormSubmit); // accion que actua c
 initialCards.forEach((element) => {
   // Al iniciar la pagina, carga cada elemento detectado en el array "initialCards" con el formato ya especificado.
   renderCard(element.name, element.link, cardContainer);
+});
+
+function closeAllErrorMessages() {
+  // Oculta todos los mensajes de error de los formularios.
+  inputsEdit.forEach((input) => {
+    // Revisa los campos del formulatio Edit Profile uno por uno.
+    hideInputError(popupEdit, input); // Oculta los mensajes de error de este formulario.
+    input.value = ""; // Borra el texto introducido por el usuario.
+  });
+  inputsPlace.forEach((input) => {
+    // Revisa los campos del formulatio Create New Place uno por uno.
+    hideInputError(popupPlace, input); // Oculta los mensajes de error de este formulario.
+    input.value = ""; // Borra el texto introducido por el usuario.
+  });
+}
+
+function showInputError(formElement, element, errorMessage) {
+  // Despliega el mensaje de error en el campo cuyos requerimientos no se cumplen.
+  const errorElement = formElement.querySelector(`.${element.id}-input-error`); // Guarda la clase donde se desplegara el mensaje de error en una variable.
+  element.classList.add("popup__input_type_error"); // Agrega la clase que cambia el color del campo no validado.
+  errorElement.textContent = errorMessage; // Guarda el mensaje por defecto generado por el error en el campo no validado.
+  errorElement.classList.add("popup__input-error_active"); // Agrega la clase que cambia el color y tamaño del texto de error.
+}
+
+function hideInputError(formElement, element) {
+  // Oculta el mensaje de error en el campo cuyos requerimientos no se cumplen.
+  const errorElement = formElement.querySelector(`.${element.id}-input-error`); // Guarda la clase donde se desplegara el mensaje de error en una variable.
+  element.classList.remove("popup__input_type_error"); // Remueve la clase que cambia el color del campo no validado.
+  errorElement.textContent = ""; // Elimina el mensaje por defecto generado por el error en el campo no validado.
+  errorElement.classList.remove("popup__input-error_active"); // Remueve la clase que cambia el color y tamaño del texto de error.
+}
+
+function toggleButtonState(inputs, popupButton) {
+  // Habilita o deshabilita el boton para enviar, guardar o crear un perfil o una publicacion.
+  const allValid = Array.from(inputs).every((input) => input.validity.valid); // Comprueba si todos los campos del formulario son validos.
+  popupButton.disabled = !allValid; // Si todos los campos son validos, el atributo "disabled" se desactiva, sino se activa.
+}
+
+inputsEdit.forEach((input) => {
+  // Accede a cada campo del formulario de editar perfil.
+  input.addEventListener("input", () => {
+    //Agrega el evento input, que reacciona al cambio de valores a tiempo real.
+    if (!input.validity.valid) {
+      // Revisa si el campo analizado esta todo validado o no.
+      showInputError(popupEdit, input, input.validationMessage); // Activa la funcion showInputError
+    } else {
+      hideInputError(popupEdit, input); // Activa la funcion hideInputError
+    }
+
+    toggleButtonState(inputsEdit, popupEditButton); // Activa la funcion que habilita o deshabilita el boton.
+  });
+});
+
+inputsPlace.forEach((input) => {
+  // Accede a cada campo del formulario de crear publicacion.
+  input.addEventListener("input", () => {
+    //Agrega el evento input, que reacciona al cambio de valores a tiempo real.
+    if (!input.validity.valid) {
+      // Revisa si el campo analizado esta todo validado o no.
+      showInputError(popupPlace, input, input.validationMessage); // Activa la funcion showInputError
+    } else {
+      hideInputError(popupPlace, input); // Activa la funcion hideInputError
+    }
+
+    toggleButtonState(inputsPlace, popupPlaceButton); // Activa la funcion que habilita o deshabilita el boton.
+  });
+});
+
+function closePopupOnOverlay(evt) {
+  // Cierra la ventana del formulario o imagen abierta al hacer click fuera de estas.
+  if (evt.target === evt.currentTarget) {
+    // Comprueba si la zona donde se hace click es la ventana abierta o no.
+    closeAllErrorMessages();
+    closeModal(evt.target); // Cierra el formulario o la imagen abierta.
+  }
+}
+
+const popups = document.querySelectorAll(".popup"); // Permite acceder a los elementos "popup" es decir, formularios e imagenes que se despliegan encima de la pagina.
+
+popups.forEach((popup) => {
+  // Accede a cada formulario y elemento que se despliegue sobrepuesto en la pagina.
+  popup.addEventListener("click", closePopupOnOverlay); // Si hay un evento click, revisa si fue o no encima del elemento y actua en consecuencia.
+  document.addEventListener("keydown", (evt) => {
+    // Revisa si se presiona una tecla al estar navegando en la pagina.
+    if (evt.key === "Escape" && popup) {
+      // Si se presiona la tecla "Escape" y hay un formulario o imagen desplegada, se activa.
+      closeAllErrorMessages();
+
+      closeModal(popup); // Cierra el formulario o imagen desplegada.
+    }
+  });
 });
