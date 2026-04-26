@@ -1,10 +1,11 @@
 import { openModal, closeModal } from "./Utils.js";
 
 class Card {
-  constructor(data, cardSelector) {
+  constructor(data, cardSelector, handleImageClick) {
     this._text = data.name;
     this._link = data.link;
     this._cardSelector = cardSelector;
+    this._handleImageClick = handleImageClick;
 
     this._element = this._getTemplate();
     this._fillCardData();
@@ -33,10 +34,6 @@ class Card {
     const cardDeleteBtn = this._element.querySelector(".card__delete-button"); // Enlaza el boton para eliminar una publicacion
     const imageElement = this._element.querySelector(".card__image");
     // Se asigna el boton de "me gusta" a la variable
-    const imageModal = document.querySelector("#image-popup"); // Enlaza el despliegue del contenido de la publicacion al seleccionarla
-    const titleImageModal = imageModal.querySelector(".popup__caption"); // Enlaza el titulo de la publicacion desplegada
-    const linkImageModal = imageModal.querySelector(".popup__image"); // Enlaza el enlace de la imagen de la publicacion desplegada
-    const closeModalBtn = imageModal.querySelector(".popup__close"); // Enlaza el boton para cerrar el despliegue del contenido de la publicacion
 
     cardLikeBtn.addEventListener("click", function (evt) {
       // Se programa un evento click
@@ -51,17 +48,7 @@ class Card {
     });
 
     imageElement.addEventListener("click", () => {
-      // Despliega la imagen y el titulo al hacer click
-      titleImageModal.textContent = this._text;
-      linkImageModal.src = this._link;
-      linkImageModal.alt = this._text;
-
-      openModal(imageModal);
-    });
-
-    closeModalBtn.addEventListener("click", () => {
-      // Cierra la imagen desplegada al hacer click
-      closeModal(imageModal);
+      this._handleImageClick();
     });
   }
 

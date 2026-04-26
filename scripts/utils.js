@@ -1,13 +1,4 @@
-import {
-  editPopupModal,
-  closeAllErrorMessages,
-  editName,
-  editDescription,
-  editCardName,
-  editCardLink,
-  cardContainer,
-  newCardModal,
-} from "./index.js";
+import { cardContainer } from "./index.js";
 
 import Card from "./Card.js";
 
