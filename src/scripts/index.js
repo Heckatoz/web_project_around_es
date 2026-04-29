@@ -30,12 +30,13 @@ const initialCards = [
   },
 ]; // Da una lista inicial de cartas para la pagina.(Nombre y enlace)
 
-import Card from "./Card.js";
-import FormValidator from "./FormValidator.js";
+import Card from "../components/Card.js";
+import FormValidator from "../components/FormValidator.js";
 
-import UserInfo from "./UserInfo.js";
-import PopupWithForm from "./PopupWithForm.js";
-import PopupWithImage from "./PopupWithImage.js";
+import UserInfo from "../components/UserInfo.js";
+import PopupWithForm from "../components/PopupWithForm.js";
+import PopupWithImage from "../components/PopupWithImage.js";
+import Section from "../components/Section.js";
 
 const editButton = document.querySelector(".profile__edit-button"); // Enlazar el boton para abrir la ventana para editar objetos en la pagina
 
@@ -56,7 +57,7 @@ const editProfilePopup = new PopupWithForm("#edit-popup", (formData) => {
 });
 
 const addCardPopup = new PopupWithForm("#new-card-popup", (formData) => {
-  const card = new Card(formData, "#card__template", handleImageClick);
+  const card = new Card(formData, "#card__template", handleCardClick);
   const cardElement = card.getElement();
   cardContainer.prepend(cardElement);
   addCardPopup.close();
@@ -64,7 +65,7 @@ const addCardPopup = new PopupWithForm("#new-card-popup", (formData) => {
 
 const imagePopup = new PopupWithImage("#image-popup");
 
-function handleImageClick(ImageData) {
+function handleCardClick(ImageData) {
   imagePopup.open(ImageData);
 }
 
@@ -95,11 +96,18 @@ profileFormValidator.enableValidation();
 const cardFormValidator = new FormValidator(config, cardForm);
 cardFormValidator.enableValidation();
 
-initialCards.forEach((element) => {
-  const card = new Card(element, "#card__template", handleImageClick);
-  const cardElement = card.getElement();
-  cardContainer.prepend(cardElement);
-});
+const cardSection = new Section(
+  {
+    items: initialCards,
+    renderer: (cardData) => {
+      const card = new Card(cardData, "#card__template", handleCardClick);
+      return card.getElement();
+    },
+  },
+  ".cards__list",
+);
+
+cardSection.renderItems();
 
 editProfilePopup.setEventListeners();
 addCardPopup.setEventListeners();

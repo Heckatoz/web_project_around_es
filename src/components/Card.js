@@ -1,15 +1,13 @@
-import { openModal, closeModal } from "./Utils.js";
-
 class Card {
-  constructor(data, cardSelector, handleImageClick) {
+  constructor(data, cardSelector, handleCardClick) {
     this._text = data.name;
     this._link = data.link;
     this._cardSelector = cardSelector;
-    this._handleImageClick = handleImageClick;
+    this._handleCardClick = handleCardClick;
 
     this._element = this._getTemplate();
     this._fillCardData();
-    this._setEventListeners();
+    this.setEventListeners();
   }
 
   _getTemplate() {
@@ -29,7 +27,7 @@ class Card {
     imageElement.src = this._link;
   }
 
-  _setEventListeners() {
+  setEventListeners() {
     const cardLikeBtn = this._element.querySelector(".card__like-button"); // Se asigna el boton de "me gusta" a la variable
     const cardDeleteBtn = this._element.querySelector(".card__delete-button"); // Enlaza el boton para eliminar una publicacion
     const imageElement = this._element.querySelector(".card__image");
@@ -48,7 +46,7 @@ class Card {
     });
 
     imageElement.addEventListener("click", () => {
-      this._handleImageClick();
+      this._handleCardClick({ name: this._text, link: this._link });
     });
   }
 
