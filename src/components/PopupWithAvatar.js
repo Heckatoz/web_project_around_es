@@ -1,11 +1,11 @@
 import Popup from "./Popup.js";
 
-export default class PopupWithForm extends Popup {
+export default class PopupWithAvatar extends Popup {
   constructor(popupSelector, handleFormSubmit) {
     super(popupSelector);
     this._handleFormSubmit = handleFormSubmit;
+
     this._form = this._popup.querySelector(".popup__form");
-    this._formData = this._popup.querySelector(".popup__input");
     this._submitButton = this._form.querySelector(".popup__button");
     this._originalButtonText = this._submitButton.textContent;
   }
@@ -35,6 +35,9 @@ export default class PopupWithForm extends Popup {
     this._form.addEventListener("submit", (evt) => {
       evt.preventDefault();
 
+      if (this._handleSubmitAction) {
+        this._handleSubmitAction();
+      }
       // Recopilar datos del formulario
       const formData = this._getInputValues();
 
@@ -42,11 +45,9 @@ export default class PopupWithForm extends Popup {
       this._handleFormSubmit(formData);
     });
   }
-
   open(userData) {
     if (userData) {
-      this._form.name.value = userData.name;
-      this._form.description.value = userData.description;
+      this._form.avatar.value = userData.avatar;
     }
 
     super.open();
@@ -54,5 +55,9 @@ export default class PopupWithForm extends Popup {
   close() {
     super.close();
     this._form.reset();
+  }
+
+  setSubmitAction(action) {
+    this._handleSubmitAction = action;
   }
 }

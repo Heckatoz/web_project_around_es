@@ -1,4 +1,4 @@
-import { cardContainer } from "../scripts/index.js";
+/*import { cardContainer } from "../scripts/index.js";
 
 import Card from "./Card.js";
 

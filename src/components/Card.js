@@ -1,9 +1,14 @@
+import { api } from "../scripts/index.js";
+
 class Card {
-  constructor(data, cardSelector, handleCardClick) {
+  constructor(data, cardSelector, handleCardClick, handleDeleteClick) {
     this._text = data.name;
     this._link = data.link;
+    this._id = data._id;
+    this._isLiked = data.isLiked;
     this._cardSelector = cardSelector;
     this._handleCardClick = handleCardClick;
+    this._handleDeleteClick = handleDeleteClick;
 
     this._element = this._getTemplate();
     this._fillCardData();
@@ -15,7 +20,7 @@ class Card {
       .querySelector(this._cardSelector)
       .content.cloneNode(true); // Crea una copia de la plantilla y la guarda en la variable cardElement
 
-    return cardElement;
+    return cardElement.querySelector(".card");
   }
 
   _fillCardData() {
@@ -25,6 +30,12 @@ class Card {
     titleElement.textContent = this._text; // Se rellena el contenido con la informacion proporcionada.
     imageElement.alt = this._text;
     imageElement.src = this._link;
+
+    if (this._isLiked) {
+      this._element
+        .querySelector(".card__like-button")
+        .classList.add("card__like-button_is-active");
+    }
   }
 
   setEventListeners() {
@@ -33,16 +44,34 @@ class Card {
     const imageElement = this._element.querySelector(".card__image");
     // Se asigna el boton de "me gusta" a la variable
 
-    cardLikeBtn.addEventListener("click", function (evt) {
+    cardLikeBtn.addEventListener("click", (evt) => {
       // Se programa un evento click
+
       evt.target.classList.toggle("card__like-button_is-active"); // Al momento de hacer click en el boton "me gusta", se activa o desactiva la clase selecionada
+
+      if (this._isLiked) {
+        // Quitar me gusta con DELETE
+        api
+          .removeLike(this._id)
+          .then(() => {
+            this._isLiked = false;
+          })
+          .catch((err) => console.log(err));
+      } else {
+        // Agregar me gusta con PUT
+        api
+          .addLike(this._id)
+          .then(() => {
+            this._isLiked = true;
+          })
+          .catch((err) => console.log(err));
+      }
     });
 
     cardDeleteBtn.addEventListener("click", (evt) => {
       // Elimina el elemento card
-      const cardToDelete = evt.target.closest(".card"); // Busca el elemento donde estaba el boton que se clickeo (publicacion a eliminar)
-
-      cardToDelete.remove();
+      evt.preventDefault();
+      this._handleDeleteClick(this);
     });
 
     imageElement.addEventListener("click", () => {

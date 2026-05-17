@@ -18,15 +18,24 @@
       </header>
       <main class="content">
         <section class="profile page__section">
-          <img class="profile__image" src="./images/avatar.jpg" alt="Avatar" />
+          <div class="profile__image_container">
+            <img class="profile__image" src="" alt="Avatar" />
+            <div>
+              <img
+                class="profile__image-edit-icon"
+                src="/src/images/editar.png"
+                alt="icono editar"
+              />
+            </div>
+          </div>
           <div class="profile__info">
-            <h1 class="profile__title">Jacques Cousteau</h1>
+            <h1 class="profile__title"></h1>
             <button
               aria-label="Editar perfil"
               class="profile__edit-button"
               type="button"
             ></button>
-            <p class="profile__description">Explorador</p>
+            <p class="profile__description"></p>
           </div>
           <button
             aria-label="Agregar tarjeta"
@@ -130,6 +139,56 @@
           ></button>
           <img alt="" class="popup__image" src="#" />
           <p class="popup__caption"></p>
+        </div>
+      </div>
+      <div class="popup" id="confirm-popup">
+        <div class="popup__content-confirm">
+          <button
+            aria-label="Cerrar ventana emergente"
+            class="popup__close"
+            type="button"
+          ></button>
+          <h3 class="popup__title">¿Estas seguro?</h3>
+          <form
+            class="popup__form"
+            id="confirm-delete-form"
+            name="popupConfirm"
+          >
+            <button
+              class="button popup__button popup__button-submit"
+              type="submit"
+            >
+              Sí
+            </button>
+          </form>
+        </div>
+      </div>
+      <div class="popup" id="edit-profile-popup">
+        <div class="popup__content">
+          <button
+            aria-label="Cerrar ventana emergente"
+            class="popup__close"
+            type="button"
+          ></button>
+          <h3 class="popup__title">Cambiar foto de perfil</h3>
+          <form class="popup__form" id="edit-profile-form" name="popupEdit">
+            <input
+              class="popup__input popup__input_type_name"
+              name="avatar"
+              id="profile_photo"
+              minlength="2"
+              placeholder="Link de Imagen"
+              type="text"
+              required
+            />
+            <span class="name-input-error popup__input-error"></span>
+            <button
+              class="button popup__button popup__button-submit"
+              type="submit"
+            >
+              Guardar
+            </button>
+          </form>
         </div>
       </div>
     </div>

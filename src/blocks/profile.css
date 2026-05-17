@@ -37,6 +37,11 @@
   max-width: 373px;
 }
 
+.profile__image_container {
+  position: relative;
+  cursor: pointer;
+}
+
 .profile__image {
   width: 120px;
   height: 120px;
@@ -44,6 +49,25 @@
   object-fit: cover;
   background-position: center;
   margin-right: 29px;
+  transition: opacity 0.3s ease;
+}
+
+.profile__image-edit-icon {
+  position: absolute;
+  top: 50%;
+  left: 40%;
+  transform: translate(-50%, -50%); /* Centra el icono */
+  opacity: 0; /* Invisible por defecto */
+  transition: opacity 0.3s ease;
+  pointer-events: none; /* Para que no interfiera con el hover */
+}
+
+.profile__image_container:hover .profile__image {
+  opacity: 0.6; /* Oscurece la imagen cuando haces hover en el contenedor */
+}
+
+.profile__image_container:hover .profile__image-edit-icon {
+  opacity: 1; /* Muestra el icono cuando haces hover en el contenedor */
 }
 
 .profile__add-button {
